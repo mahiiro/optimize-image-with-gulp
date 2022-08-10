@@ -80,7 +80,7 @@ function resize1100(cb) {
   cb();
 }
 
-// Créer des version mobiles de 600px de large max 
+//  Redimensionne les images MAX 600px de large 
 function resize600(cb) {
   gulp.src('./src/*.{jpeg,jpg,png}')
   .pipe(newer('./resized'))
@@ -97,7 +97,7 @@ function resize600(cb) {
   cb();
 }
 
-// Créer des miniatures de 100 x 100px => l'image est recadrée également
+// Créer des miniatures de 100 x 100px => l'image est recadrée
 function thumb(cb) {
   gulp.src('./src/*.{jpeg,jpg,png}')
   .pipe(newer('./resized'))

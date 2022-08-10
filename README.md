@@ -4,7 +4,7 @@ Un outil Gulp simple pour redimensionner, optimiser et convertir vos images. Sup
 <br><br>
 ## What the script do / Ce que fait le script
 The script will watch the "src" directory for new image file and thne lanch the next actions in this order:
-*  If it's a SVG image: it will be optimize and placed in the "minified" folder
+* If it's a SVG image: it will be optimize and placed in the "minified" folder
 * If it's a png or a jpg image: 
 	* It will be resize and cropped like that: 
 		* 1920px with if the original image is wider than 1920px then placed in the "resized" folder with suffix “-fullwidth”
@@ -70,7 +70,7 @@ gulp default
 <br><br>
 There is a simple task that only runs the optimise task, please use this command list instead:
 <br>
-Pour lancer une simple optimisation sur vos images sans passer par les phases de redimensionnement, lancez simplement la commande suivante 
+Pour lancer une simple optimisation sur vos images sans passer par les phases de redimensionnement, lancez simplement la commande suivante :
 ```sh
 gulp simple 
 ```

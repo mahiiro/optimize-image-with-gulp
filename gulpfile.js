@@ -1,4 +1,5 @@
 const { watch, series, task } = require('gulp'),
+  del = require('del'),
   cwebp = require('gulp-cwebp'),
   imagemin = require('gulp-imagemin'),
   rename = require('gulp-rename'),
@@ -11,20 +12,19 @@ var gulp = require('gulp');
 // Convertir en webp
 function webp(cb) {
   gulp.src('./minified/*.{jpeg,jpg,png}')
-    .pipe(newer('./final'))
     .pipe(cwebp())
-    .pipe(gulp.dest('./final'));
+    .pipe(gulp.dest('./minified'));
   cb();
 }
 
 // Optimize SVG images
 function optimizeSVG(cb) {
   gulp.src('./src/*.svg')
-    .pipe(newer('./final'))
+    .pipe(newer('./minified'))
     .pipe(imagemin({
       svgoPlugins: [{removeViewBox: false}],
     }))
-    .pipe(gulp.dest('./final'));
+    .pipe(gulp.dest('./minified'));
   cb();
 }
 
@@ -40,9 +40,9 @@ function optimize(cb) {
 // Optimize images
 function onlyOptimize(cb) {
   gulp.src('./src/*.{jpeg,jpg,png}')
-    .pipe(newer('./final'))
+    .pipe(newer('./minified'))
     .pipe(imagemin())
-    .pipe(gulp.dest('./final'))
+    .pipe(gulp.dest('./minified'))
   cb();
 }
 
@@ -115,14 +115,18 @@ function thumb(cb) {
   cb();
 }
 
+// Supprimer le contenu d'un dossier
+function clean(cb) {
+  return del(['resized/*', 'src/*']);
+}
 
 // Surveille le dossier SRC et execute toutes les tâches
 exports.default = function() {
   // La tâche par défaut surveille les différents dossiers
   watch('src/*.{jpeg,jpg,png}', gulp.series(resize1920, resize600, thumb)); // Ici on change les tâches de redimensionnement
   watch('src/*.svg', optimizeSVG); // Optimisation des SVG
-  watch('resized/*.{jpeg,jpg,png,}', optimize); // Opitmisation des autres images
-  watch('minified/*.{jpeg,jpg,png,}', webp); // Version Wepb
+  watch('resized/*.{jpeg,jpg,png}', optimize); // Opitmisation des autres images
+  watch('minified/*.{jpeg,jpg,png}', gulp.series(webp, clean)); // Version Wepb + vider le dossier
 };
 
 exports.simple = function() {
@@ -142,3 +146,4 @@ task(onlyOptimize);
 task(optimize);
 task(optimizeSVG);
 task(webp);
+task(clean);

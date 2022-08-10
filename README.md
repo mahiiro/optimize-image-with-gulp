@@ -74,3 +74,10 @@ Pour lancer une simple optimisation sur vos images sans passer par les phases de
 ```sh
 gulp simple 
 ```
+## Clean / Nettoyer les dossiers
+There is task to help you to clean your folder. Use this commande to delete all files in ./resized ans ./src
+<br>
+Pour supprimer tous les fichiers contenus dans les dossiers ./resized et ./src vous pouvez utilisez la commande suivante :
+```sh
+gulp clean 
+```

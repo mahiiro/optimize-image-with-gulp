@@ -14,7 +14,7 @@ The script will watch the "src" directory for new image file and thne lanch the 
 * all the resized images will be optimized then placed in the "minified" folder
 * all the images in the "minified" will be converted in webp format (not SVG)
 <br>
-Cet outil va surveiller le dossier “src” et lancer les actions suivantes à chaque fois que vous déposez une image dedans : minified
+Cet outil va surveiller le dossier “src” et lancer les actions suivantes à chaque fois que vous déposez une image dedans :
 *  si l’image est un SVG : elle sera optimisée puis rangée dans le dossier "minified"
 * si l’image est en jpg ou png : 
 	* elle sera découpée en 3 format : 

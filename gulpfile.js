@@ -11,7 +11,7 @@ var gulp = require('gulp');
 
 // Convertir en webp
 function webp(cb) {
-  gulp.src('./minified/*.{jpeg,jpg,png}')
+  gulp.src('./minified/*.{jpeg,JPEG,jpg,JPG,png,PNG}')
     .pipe(cwebp())
     .pipe(gulp.dest('./minified'));
   cb();
@@ -19,7 +19,7 @@ function webp(cb) {
 
 // Optimize SVG images
 function optimizeSVG(cb) {
-  gulp.src('./src/*.svg')
+  gulp.src('./src/*.{svg,SVG}')
     .pipe(newer('./minified'))
     .pipe(imagemin({
       svgoPlugins: [{removeViewBox: false}],
@@ -30,7 +30,7 @@ function optimizeSVG(cb) {
 
 // Optimize images
 function optimize(cb) {
-  gulp.src('./resized/*.{jpeg,jpg,png}')
+  gulp.src('./resized/*.{jpeg,JPEG,jpg,JPG,png,PNG}')
     .pipe(newer('./minified'))
     .pipe(imagemin())
     .pipe(gulp.dest('./minified'))
@@ -39,7 +39,7 @@ function optimize(cb) {
 
 // Optimize images
 function onlyOptimize(cb) {
-  gulp.src('./src/*.{jpeg,jpg,png}')
+  gulp.src('./src/*.{jpeg,JPEG,jpg,JPG,png,PNG}')
     .pipe(newer('./minified'))
     .pipe(imagemin())
     .pipe(gulp.dest('./minified'))
@@ -48,7 +48,7 @@ function onlyOptimize(cb) {
 
 // Redimensionne les images MAX 1920px de large 
 function resize1920(cb) {
-  gulp.src('./src/*.{jpeg,jpg,png}')
+  gulp.src('./src/*.{jpeg,JPEG,jpg,JPG,png,PNG}')
   .pipe(newer('./resized'))
   .pipe(imageResize({
       imageMagick: true,
@@ -65,7 +65,7 @@ function resize1920(cb) {
 
 // Redimensionne les images MAX 1100px de large 
 function resize1100(cb) {
-  gulp.src('./src/*.{jpeg,jpg,png}')
+  gulp.src('./src/*.{jpeg,JPEG,jpg,JPG,png,PNG}')
   .pipe(newer('./resized'))
   .pipe(imageResize({
       imageMagick: true,
@@ -82,7 +82,7 @@ function resize1100(cb) {
 
 //  Redimensionne les images MAX 600px de large 
 function resize600(cb) {
-  gulp.src('./src/*.{jpeg,jpg,png}')
+  gulp.src('./src/*.{jpeg,JPEG,jpg,JPG,png,PNG}')
   .pipe(newer('./resized'))
   .pipe(imageResize({
       imageMagick: true,
@@ -99,7 +99,7 @@ function resize600(cb) {
 
 // Créer des miniatures de 100 x 100px => l'image est recadrée
 function thumb(cb) {
-  gulp.src('./src/*.{jpeg,jpg,png}')
+  gulp.src('./src/*.{jpeg,JPEG,jpg,JPG,png,PNG}')
   .pipe(newer('./resized'))
   .pipe(imageResize({
       imageMagick: true,
@@ -123,16 +123,16 @@ function clean(cb) {
 // Surveille le dossier SRC et execute toutes les tâches
 exports.default = function() {
   // La tâche par défaut surveille les différents dossiers
-  watch('src/*.{jpeg,jpg,png}', gulp.series(resize1920, resize600, thumb)); // Ici on change les tâches de redimensionnement
+  watch('src/*.{jpeg,JPEG,jpg,JPG,png,PNG}', gulp.series(resize1920, resize600, thumb)); // Ici on change les tâches de redimensionnement
   watch('src/*.svg', optimizeSVG); // Optimisation des SVG
-  watch('resized/*.{jpeg,jpg,png}', optimize); // Opitmisation des autres images
-  watch('minified/*.{jpeg,jpg,png}', gulp.series(webp, clean)); // Version Wepb + vider le dossier
+  watch('resized/*.{jpeg,JPEG,jpg,JPG,png,PNG}', optimize); // Opitmisation des autres images
+  watch('minified/*.{jpeg,JPEG,jpg,JPG,png,PNG}', gulp.series(webp, clean)); // Version Wepb + vider le dossier
 };
 
 exports.simple = function() {
   // La tâche par défaut surveille les différents dossiers
   watch('src/*.svg', optimizeSVG); // Optimisation des SVG
-  watch('src/*.{jpeg,jpg,png,gif,svg}', onlyOptimize); // Opitmisation des autres images
+  watch('src/*.{jpeg,JPEG,jpg,JPG,png,PNG,gif,GIF,svg,SVG}', onlyOptimize); // Opitmisation des autres images
 };
 
 // Créer les tâches

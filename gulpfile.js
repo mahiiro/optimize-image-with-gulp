@@ -117,22 +117,22 @@ function thumb(cb) {
 
 // Supprimer le contenu d'un dossier
 function clean(cb) {
-  return del(['resized/*', 'src/*']);
+  return del(['./resized/*', './src/*']);
 }
 
 // Surveille le dossier SRC et execute toutes les tâches
 exports.default = function() {
   // La tâche par défaut surveille les différents dossiers
-  watch('src/*.{jpeg,JPEG,jpg,JPG,png,PNG}', gulp.series(resize1920, resize600, thumb)); // Ici on change les tâches de redimensionnement
-  watch('src/*.svg', optimizeSVG); // Optimisation des SVG
-  watch('resized/*.{jpeg,JPEG,jpg,JPG,png,PNG}', optimize); // Opitmisation des autres images
-  watch('minified/*.{jpeg,JPEG,jpg,JPG,png,PNG}', gulp.series(webp, clean)); // Version Wepb + vider le dossier
+  watch('./src/*.{jpeg,JPEG,jpg,JPG,png,PNG}', gulp.series(resize1920, resize600, thumb)); // Ici on change les tâches de redimensionnement
+  watch('./src/*.svg', optimizeSVG); // Optimisation des SVG
+  watch('./resized/*.{jpeg,JPEG,jpg,JPG,png,PNG}', optimize); // Opitmisation des autres images
+  watch('./minified/*.{jpeg,JPEG,jpg,JPG,png,PNG}', webp); // Version Wepb + vider le dossier
 };
 
 exports.simple = function() {
   // La tâche par défaut surveille les différents dossiers
-  watch('src/*.svg', optimizeSVG); // Optimisation des SVG
-  watch('src/*.{jpeg,JPEG,jpg,JPG,png,PNG,gif,GIF,svg,SVG}', onlyOptimize); // Opitmisation des autres images
+  watch('./src/*.svg', optimizeSVG); // Optimisation des SVG
+  watch('./src/*.{jpeg,JPEG,jpg,JPG,png,PNG,gif,GIF,svg,SVG}', onlyOptimize); // Opitmisation des autres images
 };
 
 // Créer les tâches

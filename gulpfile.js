@@ -10,20 +10,21 @@ var gulp = require('gulp');
 
 // Convertir en webp
 function webp(cb) {
-  gulp.src('./resized/*.{jpeg,jpg,png}')
+  gulp.src('./minified/*.{jpeg,jpg,png}')
+    .pipe(newer('./final'))
     .pipe(cwebp())
-    .pipe(gulp.dest('./minified'));
+    .pipe(gulp.dest('./final'));
   cb();
 }
 
 // Optimize SVG images
 function optimizeSVG(cb) {
   gulp.src('./src/*.svg')
-    .pipe(newer('./minified'))
+    .pipe(newer('./final'))
     .pipe(imagemin({
       svgoPlugins: [{removeViewBox: false}],
     }))
-    .pipe(gulp.dest('./minified'));
+    .pipe(gulp.dest('./final'));
   cb();
 }
 
@@ -33,6 +34,15 @@ function optimize(cb) {
     .pipe(newer('./minified'))
     .pipe(imagemin())
     .pipe(gulp.dest('./minified'))
+  cb();
+}
+
+// Optimize images
+function onlyOptimize(cb) {
+  gulp.src('./src/*.{jpeg,jpg,png}')
+    .pipe(newer('./final'))
+    .pipe(imagemin())
+    .pipe(gulp.dest('./final'))
   cb();
 }
 
@@ -108,8 +118,17 @@ function thumb(cb) {
 
 // Surveille le dossier SRC et execute toutes les tâches
 exports.default = function() {
-  // You can use a single task
-  watch('src/*.{jpeg,jpg,png,gif,svg}', gulp.series(resize1920, resize600, thumb, optimize, optimizeSVG, webp));
+  // La tâche par défaut surveille les différents dossiers
+  watch('src/*.{jpeg,jpg,png}', gulp.series(resize1920, resize600, thumb)); // Ici on change les tâches de redimensionnement
+  watch('src/*.svg', optimizeSVG); // Optimisation des SVG
+  watch('resized/*.{jpeg,jpg,png,}', optimize); // Opitmisation des autres images
+  watch('minified/*.{jpeg,jpg,png,}', webp); // Version Wepb
+};
+
+exports.simple = function() {
+  // La tâche par défaut surveille les différents dossiers
+  watch('src/*.svg', optimizeSVG); // Optimisation des SVG
+  watch('src/*.{jpeg,jpg,png,gif,svg}', onlyOptimize); // Opitmisation des autres images
 };
 
 // Créer les tâches
@@ -119,6 +138,7 @@ task(thumb);
 // Ajouter des tâches de redimensionnement ICI ==>
 
 // <== Fin des tâches de redimensionnement 
+task(onlyOptimize);
 task(optimize);
 task(optimizeSVG);
 task(webp);
